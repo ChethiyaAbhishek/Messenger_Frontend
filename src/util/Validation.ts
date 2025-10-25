@@ -65,3 +65,10 @@ export const validateProfileImage = (
   }
   return null;
 };
+
+export const validateGroupName = (name: string): string | null => {
+  if (!name || name.trim().length === 0) {
+    return "Group name is requried!";
+  }
+  return null;
+};

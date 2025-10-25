@@ -2,23 +2,24 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FlatList, Image, Pressable, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemeProvider, useTheme } from "../themes/ThemeProvider";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { uploadProfileImage } from "../api/UserService";
+import { AuthContext } from "../components/AuthProvider";
 
-type ProfileImageScreenProp = NativeStackNavigationProp<RootStack, "ProfileImageScreen">;
+type ProfileImageScreenProp = NativeStackScreenProps<RootStack, "ProfileImageScreen">;
 
-export default function ProfileImageScreen() {
+export default function ProfileImageScreen({ route, navigation }: ProfileImageScreenProp) {
 
-    const navigation = useNavigation<ProfileImageScreenProp>();
-
+    const { userId } = route.params;
     const { applied } = useTheme();
     const [profileImage, setProfileImage] = useState<string | null>(null);
+    const auth = useContext(AuthContext);
 
     const avatars = [
         require("../../assets/avatar/avatar_1.png"),
@@ -58,7 +59,7 @@ export default function ProfileImageScreen() {
                     <View className="justify-between mt-10 flex-1">
                         <View className="justify-center items-center">
                             <View>
-                                <View className="h-[58] w-[58] rounded-full border-2 border-gray-200">
+                                <View className="h-56 w-56 rounded-full border-2 border-gray-200 justify-center items-center">
                                     {profileImage ? (
                                         <Image source={{ uri: profileImage }} className="h-56 w-56 rounded-full" />
                                     ) : (
@@ -94,9 +95,11 @@ export default function ProfileImageScreen() {
                             <Pressable className="bg-sky-600 border-2 border-sky-500 rounded-full w-5/6 h-12 flex justify-center items-center flex-row"
                                 onPress={async () => {
                                     if (profileImage) {
-                                        const response = await uploadProfileImage("2", profileImage); // set User id
+                                        const response = await uploadProfileImage(userId.toString(), profileImage); // set User id auth
                                         if (response.status) {
-                                            navigation.replace("HomeScreen");
+                                            if (auth) {
+                                                await auth.signUp(String(userId));
+                                            }
                                         } else {
                                             Toast.show({
                                                 type: ALERT_TYPE.WARNING,
@@ -115,7 +118,11 @@ export default function ProfileImageScreen() {
                                 <Text className="text-slate-100 font-bold text-xl">Save Profile</Text>
                             </Pressable>
                             <Pressable className="border-2 border-sky-600 rounded-full w-5/6 h-12 flex justify-center items-center flex-row"
-                                onPress={() => { navigation.replace("HomeScreen") }}>
+                                onPress={async () => {
+                                    if (auth) {
+                                        await auth.signUp(String(userId));
+                                    }
+                                }}>
                                 <Text className="text-slate-200 font-bold text-xl">Skip Now</Text>
                             </Pressable>
                         </View>

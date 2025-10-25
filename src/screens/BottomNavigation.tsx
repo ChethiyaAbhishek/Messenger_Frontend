@@ -18,7 +18,7 @@ export default function BottomNavigation() {
                     let iconName = "chatbubble-ellipses";
                     if (route.name === "Messages") iconName = "chatbubble-ellipses";
                     else if (route.name === "Groups") iconName = "people";
-                    else if (route.name === "Calls") iconName = "call";
+                    // else if (route.name === "Calls") iconName = "call";
                     else if (route.name === "Profile") iconName = "person";
                     return <Ionicons name={iconName as any} size={24} color={color} />;
                 },
@@ -34,8 +34,8 @@ export default function BottomNavigation() {
             })}>
                 <Tabs.Screen name="Messages" component={HomeScreen} options={{ headerShown: false }} />
                 <Tabs.Screen name="Groups" component={GroupsScreen} options={{ headerShown: false }} />
-                <Tabs.Screen name="Calls" component={CallsScreen} />
-                <Tabs.Screen name="Profile" component={UserProfileScreen} />
+                {/* <Tabs.Screen name="Calls" component={CallsScreen} /> */}
+                <Tabs.Screen name="Profile" component={UserProfileScreen} options={{ headerShown: false }} />
             </Tabs.Navigator>
         </ThemeProvider>
 

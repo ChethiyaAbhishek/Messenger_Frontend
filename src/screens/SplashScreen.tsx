@@ -6,11 +6,12 @@ import { useEffect } from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
 import { useNavigation } from "@react-navigation/native";
+import { WebSocketPing } from "../socket/WebSocketPing";
 
 type Props = NativeStackNavigationProp<RootStack, "SplashScreen">
 
 export default function SplashScreen() {
-
+    WebSocketPing(4000 * 60);
     const navigation = useNavigation<Props>();
 
     const opacity = useSharedValue(0);
@@ -18,12 +19,12 @@ export default function SplashScreen() {
     useEffect(() => {
         opacity.value = withTiming(1, { duration: 3500 });
 
-        const timer = setTimeout(() => {
-            navigation.replace("SetUpScreen");
-        }, 3500);
-        return () => {
-            clearInterval(timer);
-        }
+        // const timer = setTimeout(() => {
+        //     navigation.replace("SetUpScreen");
+        // }, 3500);
+        // return () => {
+        //     clearInterval(timer);
+        // }
 
     }, [navigation, opacity]);
 
@@ -38,7 +39,7 @@ export default function SplashScreen() {
                 <View className="flex-1 justify-center items-center">
                     <Text className="font-bold text-4xl color-slate-200">Messenger.</Text>
                     <View className="flex-1 justify-center items-center absolute bottom-5">
-                        <Text className="color-slate-300">POWERED BY {process.env.EXPO_PUBLIC_APP_OWNER} </Text>
+                        <Text className="color-slate-300">DEVELOPED BY {process.env.EXPO_PUBLIC_APP_OWNER} </Text>
                         <Text className="color-slate-300">VERSION {process.env.EXPO_PUBLIC_APP_VERSION} </Text>
                     </View>
                 </View>

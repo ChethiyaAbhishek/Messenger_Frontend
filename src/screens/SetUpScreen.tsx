@@ -2,7 +2,7 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { KeyboardAvoidingView, Platform, Pressable, StatusBar, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import CountryPicker, { Country, CountryCode } from "react-native-country-picker-modal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
 import { DarkTheme, useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import { validateContactNo, validateCountryCode, validateFirstName, validateLast
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { useUserRegistration } from "../components/UserContext";
 import { createNewAccount } from "../api/UserService";
+import { AuthContext } from "../components/AuthProvider";
 
 type SetUpScreenProps = NativeStackNavigationProp<RootStack, "SetUpScreen">
 
@@ -60,7 +61,7 @@ export default function SetUpScreen() {
                                                 <Feather name="user" size={24} color="white" />
                                             )}
                                         </Text>
-                                        <TextInput inputMode="text" value={getFirstName} onChangeText={(text)=>{setFirstName(text)}}
+                                        <TextInput inputMode="text" value={getFirstName} onChangeText={(text) => { setFirstName(text) }}
                                             className="border-2 border-gray-800 rounded-r-2xl border-l-0 w-5/6 mt-3 p-3 dark:text-slate-200 text-slate-800"
                                             placeholder="First Name" placeholderTextColor={applied === "dark" ? `#334155` : `#cbd5e1`} />
                                     </View>
@@ -76,7 +77,7 @@ export default function SetUpScreen() {
                                                 <Feather name="user" size={24} color="white" />
                                             )}
                                         </Text>
-                                        <TextInput inputMode="text" value={getLastName} onChangeText={(text)=>{setLastName(text)}}
+                                        <TextInput inputMode="text" value={getLastName} onChangeText={(text) => { setLastName(text) }}
                                             className="border-2 border-gray-800 dark:text-slate-200 text-slate-800 rounded-r-2xl border-l-0 w-5/6 mt-3 p-3"
                                             placeholder="Last Name" placeholderTextColor={applied === "dark" ? `#334155` : `#cbd5e1`} />
                                     </View>
@@ -112,8 +113,7 @@ export default function SetUpScreen() {
                                             const response = await createNewAccount(userData);
 
                                             if (response.status) {
-                                                // await AsyncStorage.setItem("user",response.user);
-                                                navigation.replace("ProfileImageScreen");
+                                                navigation.replace("ProfileImageScreen",{userId:response.user.id});
                                             } else {
                                                 Toast.show({
                                                     type: ALERT_TYPE.WARNING,

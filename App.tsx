@@ -9,10 +9,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import "./global.css";
 import ProfileImageScreen from './src/screens/ProfileImageScreen';
 import BottomNavigation from './src/screens/BottomNavigation';
-import StatusScreen from './src/screens/StatusScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import SearchNewChatScreen from './src/screens/SearchNewChatScreen';
-// import { CountryCode } from 'react-native-country-picker-modal';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
 import MobileVerificationScreen from './src/screens/MobileVerificationScreen';
 import BiometricVerificationScreen from './src/screens/BiometricVerificationScreen';
@@ -20,43 +18,76 @@ import { UserRegistrationProvider } from './src/components/UserContext';
 import { useContext } from 'react';
 import { AuthContext, AuthProvider } from './src/components/AuthProvider';
 import { WebSocketProvider } from './src/socket/WebSocketProvider';
+import GroupChatScreen from './src/screens/GroupChatScreen';
+import ContactProfileScreen from './src/screens/ContactProfileScreen';
+import GroupProfileScreen from './src/screens/GroupProfileScreen';
+import AddGroupMemberScreen from './src/screens/AddGroupMemberScreen';
+import NewGroupScreen from './src/screens/NewGroupScreen';
 
 export type RootStack = {
   SplashScreen: undefined;
   MobileVerificationScreen: undefined;
-  BiometricVerificationScreen: undefined;
   SetUpScreen: undefined;
-  ProfileImageScreen: undefined;
+  ProfileImageScreen: {
+    userId: number
+  };
   HomeScreen: undefined;
-  StatusScreen: undefined;
+  SearchNewChatScreen: undefined;
   ChatScreen: {
     contactId: string;
     name: string;
     lastSeen: string;
     profileImg: string | null;
+    savedStatus: string;
   };
-  SearchNewChatScreen: undefined;
+  ContactProfileScreen: {
+    contactId: number;
+  };
+  GroupChatScreen: {
+    groupId: string;
+    profileImg: string | null;
+  };
+  GroupProfileScreen: {
+    groupId: number;
+  };
+  NewGroupScreen: undefined;
+  AddGroupMemberScreen: {
+    groupId: number;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStack>();
 
 function Msg_ChatApp() {
-  // const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   return (
-    <WebSocketProvider userId={1}>
+    <WebSocketProvider userId={auth ? Number(auth.userId) : 0}>
       <ThemeProvider>
         <UserRegistrationProvider>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName="HomeScreen" screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="SplashScreen" component={SplashScreen} />
-              <Stack.Screen name="MobileVerificationScreen" component={MobileVerificationScreen} />
-              <Stack.Screen name="BiometricVerificationScreen" component={BiometricVerificationScreen} />
-              <Stack.Screen name="SetUpScreen" component={SetUpScreen} />
-              <Stack.Screen name="ProfileImageScreen" component={ProfileImageScreen} />
-              <Stack.Screen name="HomeScreen" component={BottomNavigation} />
-              <Stack.Screen name="StatusScreen" component={StatusScreen} />
-              <Stack.Screen name="ChatScreen" component={ChatScreen} />
-              <Stack.Screen name="SearchNewChatScreen" component={SearchNewChatScreen} />
+            <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
+
+              {auth?.isLoading ? (
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
+              ) : auth?.userId === null ? (
+                <Stack.Group>
+                  <Stack.Screen name="MobileVerificationScreen" component={MobileVerificationScreen} />
+                  <Stack.Screen name="SetUpScreen" component={SetUpScreen} />
+                  <Stack.Screen name="ProfileImageScreen" component={ProfileImageScreen} />
+                </Stack.Group>
+              ) : (
+                <Stack.Group>
+                  <Stack.Screen name="HomeScreen" component={BottomNavigation} />
+                  <Stack.Screen name="SearchNewChatScreen" component={SearchNewChatScreen} />
+                  <Stack.Screen name="ChatScreen" component={ChatScreen} />
+                  <Stack.Screen name="ContactProfileScreen" component={ContactProfileScreen} />
+                  <Stack.Screen name="GroupChatScreen" component={GroupChatScreen} />
+                  <Stack.Screen name="GroupProfileScreen" component={GroupProfileScreen} />
+                  <Stack.Screen name="NewGroupScreen" component={NewGroupScreen} />
+                  <Stack.Screen name="AddGroupMemberScreen" component={AddGroupMemberScreen} />
+                </Stack.Group>
+              )}
+
             </Stack.Navigator>
           </NavigationContainer>
         </UserRegistrationProvider>

@@ -2,7 +2,7 @@ import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { KeyboardAvoidingView, Platform, Pressable, StatusBar, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // import CountryPicker, { Country, CountryCode } from "react-native-country-picker-modal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStack } from "../../App";
 import { DarkTheme, useNavigation } from "@react-navigation/native";
@@ -13,12 +13,14 @@ import CountrySelect, { ICountry } from "react-native-country-select";
 import { useUserRegistration } from "../components/UserContext";
 import { checkContactNumber } from "../api/UserService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../components/AuthProvider";
 
 type MobileVerificationScreenProps = NativeStackNavigationProp<RootStack, "MobileVerificationScreen">
 
 export default function MobileVerificationScreen() {
 
     const navigation = useNavigation<MobileVerificationScreenProps>();
+    const auth = useContext(AuthContext);
 
     const [callingCode, setCallingCode] = useState("");
     const [contactNo, setContactNo] = useState("");
@@ -108,8 +110,10 @@ export default function MobileVerificationScreen() {
                                             const response = await checkContactNumber(callingCode, contactNo);
                                             if (response.status) {
                                                 if (response.msg === "1") {
-                                                    // await AsyncStorage.setItem("user",response.user);
-                                                    navigation.replace("HomeScreen");
+                                                    // navigation.replace("HomeScreen");
+                                                    if (auth) {
+                                                        await auth.signUp(String(response.user.id));
+                                                    }
                                                 } else {
                                                     setUserData((prev) => ({
                                                         ...prev,

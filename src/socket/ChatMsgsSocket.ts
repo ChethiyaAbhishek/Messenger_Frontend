@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useWebSocket } from "./WebSocketProvider";
-import { Chat, User, WSResponse } from "./Chat";
+import { Chat, ChatContact, User, WSResponse } from "./Chat";
 
 export function ChatMsgsSocket(contactId: number) {
   const { socket, sendMessage } = useWebSocket();
   const [messages, setMessage] = useState<Chat[]>([]);
-  const [contact, setContact] = useState<User>();
+  const [contact, setContact] = useState<ChatContact>();
 
   useEffect(() => {
     
