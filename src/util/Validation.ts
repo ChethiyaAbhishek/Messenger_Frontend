@@ -1,10 +1,10 @@
+// Name Validations
 export const validateFirstName = (name: string): string | null => {
   if (!name || name.trim().length === 0) {
     return "First name is requried!";
   }
   return null;
 };
-
 export const validateLastName = (name: string): string | null => {
   if (!name || name.trim().length === 0) {
     return "Last name is requried!";
@@ -12,6 +12,7 @@ export const validateLastName = (name: string): string | null => {
   return null;
 };
 
+// Password Validation
 export const validatePassword = (password: string): string | null => {
   if (!password || password.trim().length < 8) {
     return "Password is requried with minimum of 8 characters!";
@@ -19,6 +20,7 @@ export const validatePassword = (password: string): string | null => {
   return null;
 };
 
+// Country Code Validation
 export const validateCountryCode = (countryCode: string): string | null => {
   const regex = /^\+[1-9]\d{0,3}$/;
   if (!countryCode) {
@@ -31,6 +33,7 @@ export const validateCountryCode = (countryCode: string): string | null => {
   return null;
 };
 
+// Contact Number Validation
 export const validateContactNo = (contactNo: string): string | null => {
   const regex = /^[1-9][0-9]{6,14}$/;
   if (!contactNo) {
@@ -43,6 +46,7 @@ export const validateContactNo = (contactNo: string): string | null => {
   return null;
 };
 
+// Profile Image Validation
 export const validateProfileImage = (
   image: {
     uri: string;
@@ -66,6 +70,7 @@ export const validateProfileImage = (
   return null;
 };
 
+// Group Name Validation
 export const validateGroupName = (name: string): string | null => {
   if (!name || name.trim().length === 0) {
     return "Group name is requried!";
