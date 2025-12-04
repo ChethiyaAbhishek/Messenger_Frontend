@@ -65,7 +65,7 @@ For screenshots of these screens, see the [Project Documentation PDF](Messenger%
 
 2. **Clone the Repository**:
    ```
-   git clone https://github.com/your-username/messenger-frontend.git
+   git clone https://github.com/ChethiyaAbhishek/Messenger_Frontend.git
    cd messenger-frontend
    ```
 
@@ -109,8 +109,8 @@ For screenshots of these screens, see the [Project Documentation PDF](Messenger%
   - `screens/`: All screen components (e.g., HomeScreen.tsx, ChatScreen.tsx).
   - `socket/`: WebSocket handlers for real-time features (e.g., sendChat, groupMsgs).
   - `util/`: Utilities like Validation.ts for mobile number checks.
-  - `components/`: Reusable UI components.
-  - `providers/`: Contexts like AuthProvider and WebSocketProvider.
+  - `components/`: Contexts like AuthProvider and WebSocketProvider.
+  - `api/`: User Services.
 - `assets/`: Images, icons, etc.
 - `package.json`: Dependencies and scripts.
 
