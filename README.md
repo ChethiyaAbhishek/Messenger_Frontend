@@ -66,7 +66,7 @@ For screenshots of these screens, see the [Project Documentation PDF](Messenger%
 2. **Clone the Repository**:
    ```
    git clone https://github.com/ChethiyaAbhishek/Messenger_Frontend.git
-   cd messenger-frontend
+   cd Messenger_Frontend
    ```
 
 3. **Install Dependencies**:
